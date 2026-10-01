@@ -1,7 +1,3 @@
-# import streamlit as st
-# st.title ("Smart Data Cleaner")
-# # st.write("HEllo! Upload a messy file and  i'll clean it")
-
 import streamlit as st
 import pandas as pd
 
