@@ -10,3 +10,20 @@ if file is not None:
     st.subheader("Preview of your data")
     st.dataframe(df.head(10))
     st.write("Rows:", df.shape[0], "| Columns:", df.shape[1])
+    
+    
+    st.subheader("Data quality check")
+
+    missing = df.isnull().sum()
+    missing = missing[missing > 0]
+    duplicates = df.duplicated().sum()
+
+    col1, col2 = st.columns(2)
+    col1.metric("Duplicate rows", duplicates)
+    col2.metric("Columns with missing values", len(missing))
+
+    if len(missing) > 0:
+        st.write("Missing values per column:")
+        st.dataframe(missing.rename("Missing count"))
+    else:
+        st.success("No missing values found!")
