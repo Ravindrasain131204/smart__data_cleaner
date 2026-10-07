@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 st.title("Smart Data Cleaner")
 
@@ -54,3 +55,21 @@ if file is not None:
 
     csv = clean_df.to_csv(index=False).encode("utf-8")
     st.download_button("Download cleaned CSV", csv, "cleaned_data.csv", "text/csv")
+    
+    st.subheader("Visual summary")
+
+    if len(missing) > 0:
+        fig1 = px.bar(
+            missing.reset_index(),
+            x="index",
+            y=0,
+            labels={"index": "Column", "0": "Missing count"},
+            title="Missing values per column (original data)"
+        )
+        st.plotly_chart(fig1)
+
+    numeric_cols = clean_df.select_dtypes(include="number").columns.tolist()
+    if numeric_cols:
+        chosen = st.selectbox("Pick a column to see its distribution", numeric_cols)
+        fig2 = px.histogram(clean_df, x=chosen, title=f"Distribution of {chosen}")
+        st.plotly_chart(fig2)
